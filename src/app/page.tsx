@@ -197,7 +197,7 @@ export default function PataPataPanicPage() {
   };
 
   return (
-    <main className="min-h-screen text-foreground flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-body bg-cover bg-center" style={{backgroundImage: "url('/race-track-bg.svg')"}}>
+    <main className="min-h-screen text-foreground flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-body bg-cover bg-center" style={{backgroundImage: "url('/fondo.png')"}}>
       <Card className="w-full max-w-4xl shadow-2xl rounded-xl border-2 border-primary/20 bg-card/80 backdrop-blur-sm">
         <CardHeader className="text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tighter text-primary font-headline" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.2)' }}>
