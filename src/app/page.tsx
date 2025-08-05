@@ -83,11 +83,16 @@ const RaceView = ({ horses }: { horses: HorseState[] }) => {
             className="absolute transition-all duration-100 ease-linear"
             style={{ 
               left: `calc(${horse.position}% - 60px)`, 
-              top: `180px`,
+              top: `${120 + index * 60}px`,
               width: '80px',
               height: '80px',
             }}
           >
+            <div
+             className="absolute -top-6 left-1/2 -translate-x-1/2 text-center"
+            >
+              <span className="bg-black/50 text-white text-xs font-bold px-2 py-1 rounded-md whitespace-nowrap">{horse.name}</span>
+            </div>
            <Image 
              src="https://cdn.pixabay.com/animation/2024/12/02/02/56/02-56-03-27_512.gif"
              alt={`Horse ${horse.name}`} 
@@ -131,7 +136,7 @@ const HorseSelection = memo(({ horse, isSelected, onSelect, disabled }: { horse:
 });
 HorseSelection.displayName = 'HorseSelection';
 
-export default function PataPataPanicPage() {
+export default function HorsePanicPage() {
   const [horses, setHorses] = useState<HorseState[]>([]);
   const [gameState, setGameState] = useState<GameState>('idle');
   const [selectedHorseId, setSelectedHorseId] = useState<number | null>(null);
