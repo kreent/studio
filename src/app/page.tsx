@@ -76,7 +76,7 @@ HorseIcon.displayName = 'HorseIcon';
 
 const RaceView = ({ horses }: { horses: HorseState[] }) => {
   return (
-    <div className="h-64 w-full bg-cover bg-center rounded-lg relative overflow-hidden border-4 border-primary/30" style={{ backgroundImage: "url('/fondo.png')" }}>
+    <div className="w-full bg-cover bg-bottom rounded-lg relative overflow-hidden border-4 border-primary/30" style={{ backgroundImage: "url('/fondo.png')", height: '23rem' }}>
        {horses.map((horse, index) => (
          <div 
             key={horse.id}
