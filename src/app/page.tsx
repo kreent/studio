@@ -61,7 +61,7 @@ const RaceView = ({ horses }: { horses: HorseState[] }) => {
             className="absolute transition-all duration-100 ease-linear"
             style={{ 
               left: `calc(${horse.position}% - 60px)`, 
-              top: `${25 + index * 20}%`,
+              top: `180px`,
               width: '80px',
               height: '80px',
             }}
