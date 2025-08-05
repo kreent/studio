@@ -83,7 +83,7 @@ const RaceView = ({ horses }: { horses: HorseState[] }) => {
             className="absolute transition-all duration-100 ease-linear"
             style={{ 
               left: `calc(${horse.position}% - 60px)`, 
-              top: `${200 + index * 20}px`,
+              top: `${200 + index * 40}px`,
               width: '80px',
               height: '80px',
             }}
@@ -277,7 +277,7 @@ export default function HorsePanicPage() {
              </div>
           </div>
         </CardContent>
-        <CardFooter className="flex justify-center items-center gap-4 pt-6 h-20">
+        <CardFooter className="flex justify-center items-center gap-4 pt-6">
           {gameState === 'selecting' && (
             <Button size="lg" onClick={() => selectedHorseId && setGameState('running')} disabled={!selectedHorseId} className="shadow-lg">
               <Play className="mr-2 h-5 w-5" /> Start Race
