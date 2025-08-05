@@ -184,19 +184,17 @@ export default function PataPataPanicPage() {
   };
 
   return (
-    <main className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-body">
-      <Card className="w-full max-w-4xl shadow-2xl rounded-xl border-2 border-primary/20 bg-card/90 backdrop-blur-sm">
+    <main className="min-h-screen text-foreground flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-body bg-cover bg-center" style={{backgroundImage: "url('/race-track-bg.svg')"}}>
+      <Card className="w-full max-w-4xl shadow-2xl rounded-xl border-2 border-primary/20 bg-card/80 backdrop-blur-sm">
         <CardHeader className="text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tighter text-primary font-headline">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tighter text-primary font-headline" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.2)' }}>
             Pata Pata Panic
           </h1>
           <p className="text-muted-foreground">Choose your horse and may the odds be ever in your favor!</p>
         </CardHeader>
         <CardContent>
-          <div className="relative mb-4 p-2 rounded-lg bg-black/5">
-             <Image src="https://placehold.co/1200x200.png" data-ai-hint="race track cartoon" alt="Race Track Background" width={1200} height={200} className="w-full h-auto object-cover rounded-md opacity-10 absolute inset-0"/>
-            <div className="relative py-4 px-2">
-                {horses.map(horse => (
+          <div className="space-y-2 p-2 rounded-lg">
+             {horses.map(horse => (
                   <HorseComponent 
                     key={horse.id} 
                     horse={horse} 
@@ -205,7 +203,6 @@ export default function PataPataPanicPage() {
                     disabled={gameState !== 'selecting'}
                   />
                 ))}
-            </div>
           </div>
 
           <Separator className="my-6" />
@@ -217,12 +214,12 @@ export default function PataPataPanicPage() {
                 </div>
               )}
              <div className="flex items-center justify-center gap-4 flex-wrap">
-                <div className="p-4 rounded-lg bg-primary/10 min-w-[150px]">
+                <div className="p-4 rounded-lg bg-primary/10 min-w-[150px] text-center">
                     <p className="text-sm text-muted-foreground font-headline">Your Score</p>
                     <p className="text-4xl font-bold text-primary">{score}</p>
                 </div>
                 {selectedHorseId !== null && (
-                    <div className="p-4 rounded-lg bg-background border">
+                    <div className="p-4 rounded-lg bg-background border text-center">
                         <p className="text-sm text-muted-foreground font-headline">Your Pick</p>
                         <p className="text-2xl font-bold" style={{color: horses.find(h => h.id === selectedHorseId)?.color}}>
                             {horses.find(h => h.id === selectedHorseId)?.name}
@@ -234,23 +231,23 @@ export default function PataPataPanicPage() {
         </CardContent>
         <CardFooter className="flex justify-center items-center gap-4 pt-6 h-16">
           {gameState === 'selecting' && (
-            <Button size="lg" onClick={() => selectedHorseId && setGameState('running')} disabled={!selectedHorseId}>
+            <Button size="lg" onClick={() => selectedHorseId && setGameState('running')} disabled={!selectedHorseId} className="shadow-lg">
               <Play className="mr-2 h-5 w-5" /> Start Race
             </Button>
           )}
           {gameState === 'running' && (
-            <Button size="lg" onClick={handleCashOut} variant="secondary" className="bg-accent text-accent-foreground hover:bg-accent/80">
+            <Button size="lg" onClick={handleCashOut} variant="secondary" className="bg-accent text-accent-foreground hover:bg-accent/80 shadow-lg">
               <DollarSign className="mr-2 h-5 w-5" /> Cash Out
             </Button>
           )}
           {(gameState === 'running' || gameState === 'finished') && (
-            <Button size="lg" variant="outline" onClick={initializeGame}>
+            <Button size="lg" variant="outline" onClick={initializeGame} className="shadow-lg">
               <RotateCcw className="mr-2 h-5 w-5" /> Play Again
             </Button>
           )}
         </CardFooter>
       </Card>
-      <footer className="mt-8 text-center text-muted-foreground text-sm">
+      <footer className="mt-8 text-center text-white text-sm font-bold" style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}>
         <p>A Firebase Studio Creation</p>
       </footer>
     </main>

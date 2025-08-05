@@ -1,0 +1,16 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B0E0E6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#skyGradient)" />
+  <rect y="600" width="1200" height="200" fill="#32CD32" />
+  <g id="fence">
+    <rect y="550" width="1200" height="15" fill="white" stroke="black" stroke-width="1"/>
+    <rect y="590" width="1200" height="15" fill="white" stroke="black" stroke-width="1"/>
+    <path d="M 0 530 H 1200" stroke="white" stroke-width="5" />
+    <path d="M 0 630 H 1200" stroke="white" stroke-width="5" />
+  </g>
+</svg>
