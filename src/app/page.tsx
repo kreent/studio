@@ -20,11 +20,9 @@ type HorseState = {
 type GameState = 'idle' | 'selecting' | 'running' | 'finished';
 
 const HORSES_DATA = [
-  { name: 'Thunderbolt', color: 'hsl(0, 80%, 60%)', hsl: '0 80% 60%' },
-  { name: 'Stardust', color: 'hsl(220, 80%, 60%)', hsl: '220 80% 60%' },
-  { name: 'Gale', color: 'hsl(140, 80%, 60%)', hsl: '140 80% 60%' },
-  { name: 'Shadowfax', color: 'hsl(45, 80%, 60%)', hsl: '45 80% 60%' },
-  { name: 'Night-runner', color: 'hsl(260, 80%, 60%)', hsl: '260 80% 60%' },
+  { name: 'Thunderbolt', color: 'hsl(220, 80%, 60%)', hsl: '220 80% 60%' },
+  { name: 'Stardust', color: 'hsl(25, 80%, 60%)', hsl: '25 80% 60%' },
+  { name: 'Gale', color: 'hsl(300, 80%, 60%)', hsl: '300 80% 60%' },
 ];
 
 const FINISH_LINE = 100;
@@ -54,55 +52,62 @@ const HorseIcon = ({ className, style }: { className?: string; style?: React.CSS
 );
 HorseIcon.displayName = 'HorseIcon';
 
-const RaceTrack = ({ position, color }: { position: number, color: string }) => {
+const RaceView = ({ horses }: { horses: HorseState[] }) => {
   return (
-    <div className="h-12 w-full bg-secondary rounded-full flex items-center p-1 relative overflow-hidden border-2 border-primary/20">
-      <div 
-        className="h-10 w-10 relative transition-all duration-100 ease-linear"
-        style={{ left: `calc(${position}% - 40px)` }}
-      >
-        <Image src="/horse-running.gif" alt="Running horse" width={40} height={40} unoptimized style={{ filter: `hue-rotate(${parseInt(color.split(' ')[0])}deg) saturate(1.5)`}} />
-      </div>
+    <div className="h-64 w-full bg-cover bg-center rounded-lg relative overflow-hidden border-4 border-primary/30" style={{ backgroundImage: "url('/fondo.png')" }}>
+       {horses.map((horse, index) => (
+         <div 
+            key={horse.id}
+            className="absolute transition-all duration-100 ease-linear"
+            style={{ 
+              left: `calc(${horse.position}% - 60px)`, 
+              top: `${25 + index * 20}%`,
+              width: '80px',
+              height: '80px',
+            }}
+          >
+           <Image 
+             src="/horse-running.gif" 
+             alt={`Horse ${horse.name}`} 
+             width={80} 
+             height={80} 
+             unoptimized 
+             style={{ filter: `hue-rotate(${parseInt(horse.hsl.split(' ')[0])}deg) saturate(1.5) brightness(1.2)`}}
+           />
+           {horse.status === 'broken' && <X className="h-8 w-8 text-destructive absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse" />}
+         </div>
+       ))}
     </div>
   );
 };
-RaceTrack.displayName = 'RaceTrack';
+RaceView.displayName = 'RaceView';
 
 
-const HorseComponent = memo(({ horse, isSelected, onSelect, disabled }: { horse: HorseState, isSelected: boolean, onSelect: (id: number) => void, disabled: boolean }) => {
+const HorseSelection = memo(({ horse, isSelected, onSelect, disabled }: { horse: HorseState, isSelected: boolean, onSelect: (id: number) => void, disabled: boolean }) => {
     return (
         <button 
           onClick={() => onSelect(horse.id)} 
           disabled={disabled} 
           className={cn(
-            "w-full text-left block cursor-pointer disabled:cursor-not-allowed rounded-lg mb-2 transition-all duration-300",
-            isSelected ? 'ring-2 ring-primary ring-offset-2 ring-offset-background' : 'ring-0',
+            "w-full text-left block cursor-pointer disabled:cursor-not-allowed rounded-lg transition-all duration-300 border-2",
+            isSelected ? 'border-primary' : 'border-transparent',
             disabled ? '' : 'hover:bg-primary/5'
           )}
           aria-pressed={isSelected}
         >
           <div 
             style={{ '--primary': horse.hsl } as React.CSSProperties}
-            className="p-4 rounded-lg bg-card/80 border"
+            className="p-3 rounded-md bg-card/80"
           >
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3 w-40 md:w-48">
-                <HorseIcon style={{ color: horse.color }} className="h-8 w-8 shrink-0" />
-                <span className="font-bold text-lg truncate font-headline">{horse.name}</span>
-              </div>
-              <div className="flex-1">
-                 <RaceTrack position={horse.position} color={horse.hsl} />
-              </div>
-              <div className="w-12 text-right">
-                {horse.status === 'broken' && <X className="h-6 w-6 text-destructive inline-block animate-pulse" />}
-                {horse.status === 'finished' && <Award className="h-6 w-6 text-yellow-500 inline-block" />}
-              </div>
+            <div className="flex items-center gap-3">
+              <HorseIcon style={{ color: horse.color }} className="h-8 w-8 shrink-0" />
+              <span className="font-bold text-lg truncate font-headline">{horse.name}</span>
             </div>
           </div>
         </button>
     );
 });
-HorseComponent.displayName = 'HorseComponent';
+HorseSelection.displayName = 'HorseSelection';
 
 export default function PataPataPanicPage() {
   const [horses, setHorses] = useState<HorseState[]>([]);
@@ -140,7 +145,7 @@ export default function PataPataPanicPage() {
           if (horse.status !== 'running') return horse;
           if (Math.random() < BROKEN_LEG_PROBABILITY) return { ...horse, status: 'broken' };
           
-          const newPosition = horse.position + Math.random() * 2.5 + 0.5;
+          const newPosition = horse.position + Math.random() * 2.0 + 0.4;
           if (newPosition >= FINISH_LINE) {
             return { ...horse, position: FINISH_LINE, status: 'finished' };
           }
@@ -206,24 +211,27 @@ export default function PataPataPanicPage() {
           <p className="text-muted-foreground">Choose your horse and may the odds be ever in your favor!</p>
         </CardHeader>
         <CardContent>
-          <div className="space-y-2 p-2 rounded-lg">
-             {horses.map(horse => (
-                  <HorseComponent 
-                    key={horse.id} 
-                    horse={horse} 
-                    isSelected={selectedHorseId === horse.id} 
-                    onSelect={setSelectedHorseId} 
-                    disabled={gameState !== 'selecting'}
-                  />
-                ))}
-          </div>
-
+          <RaceView horses={horses} />
+          
           <Separator className="my-6" />
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+             {horses.map(horse => (
+                <HorseSelection 
+                  key={horse.id} 
+                  horse={horse} 
+                  isSelected={selectedHorseId === horse.id} 
+                  onSelect={setSelectedHorseId} 
+                  disabled={gameState !== 'selecting'}
+                />
+              ))}
+          </div>
 
           <div className="text-center">
              {gameState === 'finished' && (
                 <div className="mb-4 animate-in fade-in duration-500">
                   <p className="text-2xl font-bold font-headline">{finalMessage}</p>
+                   {winner && <Award className="h-8 w-8 text-yellow-500 inline-block" />}
                 </div>
               )}
              <div className="flex items-center justify-center gap-4 flex-wrap">
@@ -231,7 +239,7 @@ export default function PataPataPanicPage() {
                     <p className="text-sm text-muted-foreground font-headline">Your Score</p>
                     <p className="text-4xl font-bold text-primary">{score}</p>
                 </div>
-                {selectedHorseId !== null && (
+                {selectedHorseId !== null && gameState !== 'selecting' && (
                     <div className="p-4 rounded-lg bg-background border text-center">
                         <p className="text-sm text-muted-foreground font-headline">Your Pick</p>
                         <p className="text-2xl font-bold" style={{color: horses.find(h => h.id === selectedHorseId)?.color}}>
@@ -242,7 +250,7 @@ export default function PataPataPanicPage() {
              </div>
           </div>
         </CardContent>
-        <CardFooter className="flex justify-center items-center gap-4 pt-6 h-16">
+        <CardFooter className="flex justify-center items-center gap-4 pt-6 h-20">
           {gameState === 'selecting' && (
             <Button size="lg" onClick={() => selectedHorseId && setGameState('running')} disabled={!selectedHorseId} className="shadow-lg">
               <Play className="mr-2 h-5 w-5" /> Start Race
