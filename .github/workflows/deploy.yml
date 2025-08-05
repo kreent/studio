@@ -3,36 +3,30 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - master
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+      - main # Change this to your default branch if it's not main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-      - run: npm install
-      - run: npm run build
-      - name: Upload production-ready build files
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './dist'
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Or your project's Node.js version
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build # Or your project's build command
+
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist # Change this if your build output directory is different
+          publish_branch: gh-pages # The branch where the deployed site will be hosted
