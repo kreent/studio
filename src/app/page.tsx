@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback, memo } from 'react';
 import { Play, X, DollarSign, RotateCcw, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
@@ -55,6 +54,20 @@ const HorseIcon = ({ className, style }: { className?: string; style?: React.CSS
 );
 HorseIcon.displayName = 'HorseIcon';
 
+const RaceTrack = ({ position, color }: { position: number, color: string }) => {
+  return (
+    <div className="h-12 w-full bg-secondary rounded-full flex items-center p-1 relative overflow-hidden border-2 border-primary/20">
+      <div 
+        className="h-10 w-10 relative transition-all duration-100 ease-linear"
+        style={{ left: `calc(${position}% - 40px)` }}
+      >
+        <Image src="/horse-running.gif" alt="Running horse" width={40} height={40} unoptimized style={{ filter: `hue-rotate(${parseInt(color.split(' ')[0])}deg) saturate(1.5)`}} />
+      </div>
+    </div>
+  );
+};
+RaceTrack.displayName = 'RaceTrack';
+
 
 const HorseComponent = memo(({ horse, isSelected, onSelect, disabled }: { horse: HorseState, isSelected: boolean, onSelect: (id: number) => void, disabled: boolean }) => {
     return (
@@ -78,7 +91,7 @@ const HorseComponent = memo(({ horse, isSelected, onSelect, disabled }: { horse:
                 <span className="font-bold text-lg truncate font-headline">{horse.name}</span>
               </div>
               <div className="flex-1">
-                <Progress value={horse.position} />
+                 <RaceTrack position={horse.position} color={horse.hsl} />
               </div>
               <div className="w-12 text-right">
                 {horse.status === 'broken' && <X className="h-6 w-6 text-destructive inline-block animate-pulse" />}
