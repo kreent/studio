@@ -67,7 +67,7 @@ const RaceView = ({ horses }: { horses: HorseState[] }) => {
             }}
           >
            <Image 
-             src="/horse-running.gif" 
+             src="https://cdn.pixabay.com/animation/2024/12/02/02/56/02-56-03-27_512.gif"
              alt={`Horse ${horse.name}`} 
              width={80} 
              height={80} 
