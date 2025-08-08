@@ -242,7 +242,7 @@ export default function HorsePanicPage() {
           
           <Separator className="my-6" />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
              {horses.map(horse => (
                 <HorseSelection 
                   key={horse.id} 
@@ -254,7 +254,7 @@ export default function HorsePanicPage() {
               ))}
           </div>
 
-          <div className="text-center">
+          <div className="text-center mt-6">
              {gameState === 'finished' && (
                 <div className="mb-4 animate-in fade-in duration-500">
                   <p className="text-2xl font-bold font-headline">{finalMessage}</p>
