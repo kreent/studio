@@ -76,7 +76,7 @@ HorseIcon.displayName = 'HorseIcon';
 
 const RaceView = ({ horses }: { horses: HorseState[] }) => {
   return (
-    <div className="w-full bg-cover bg-bottom rounded-lg relative overflow-hidden border-4 border-primary/30" style={{ backgroundImage: "url('/fondo.png')", height: '23rem' }}>
+    <div className="w-full bg-cover bg-bottom rounded-lg relative overflow-hidden border-4 border-primary/30" style={{ backgroundImage: "url('/race-track-bg.svg')", height: '23rem' }}>
        {horses.map((horse, index) => (
          <div 
             key={horse.id}
@@ -91,7 +91,7 @@ const RaceView = ({ horses }: { horses: HorseState[] }) => {
             <div
              className="absolute -top-6 left-1/2 -translate-x-1/2 text-center"
             >
-              <span className="bg-black/50 text-white text-xs font-bold px-2 py-1 rounded-md whitespace-nowrap">{horse.name}</span>
+              <span className="bg-black/50 text-white text-xs font-bold px-2 py-1 rounded-md whitespace-nowrap" style={{textShadow: '0 0 5px hsl(var(--primary))'}}>{horse.name}</span>
             </div>
            <Image 
              src="https://cdn.pixabay.com/animation/2024/12/02/02/56/02-56-03-27_512.gif"
@@ -99,7 +99,7 @@ const RaceView = ({ horses }: { horses: HorseState[] }) => {
              width={80} 
              height={80} 
              unoptimized 
-             style={{ filter: `hue-rotate(${parseInt(horse.hsl.split(' ')[0])}deg) saturate(1.5) brightness(1.2)`}}
+             style={{ filter: `hue-rotate(${parseInt(horse.hsl.split(' ')[0])}deg) saturate(1.5) brightness(1.2) drop-shadow(0 0 8px ${horse.color})`}}
            />
            {horse.status === 'broken' && <SmokePuffIcon className="h-12 w-12 text-slate-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse" />}
          </div>
@@ -117,13 +117,13 @@ const HorseSelection = memo(({ horse, isSelected, onSelect, disabled }: { horse:
           disabled={disabled} 
           className={cn(
             "w-full text-left block cursor-pointer disabled:cursor-not-allowed rounded-lg transition-all duration-300 border-2",
-            isSelected ? 'border-primary' : 'border-transparent',
-            disabled ? '' : 'hover:bg-primary/5'
+            isSelected ? 'border-primary' : 'border-primary/20',
+            disabled ? '' : 'hover:bg-primary/10 hover:border-primary'
           )}
           aria-pressed={isSelected}
         >
           <div 
-            style={{ '--primary': horse.hsl } as React.CSSProperties}
+            style={{ '--primary': horse.hsl, textShadow: `0 0 10px ${horse.color}` } as React.CSSProperties}
             className="p-3 rounded-md bg-card/80"
           >
             <div className="flex items-center gap-3">
@@ -229,18 +229,18 @@ export default function HorsePanicPage() {
   };
 
   return (
-    <main className="min-h-screen text-foreground flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-body bg-cover bg-center" style={{backgroundImage: "url('/fondo.png')"}}>
-      <Card className="w-full max-w-4xl shadow-2xl rounded-xl border-2 border-primary/20 bg-card/80 backdrop-blur-sm">
+    <main className="min-h-screen text-foreground flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-body bg-background">
+      <Card className="w-full max-w-4xl shadow-2xl rounded-xl border-2 border-primary/30 bg-card/80 backdrop-blur-sm" style={{boxShadow: '0 0 20px hsl(var(--primary))'}}>
         <CardHeader className="text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tighter text-primary font-headline" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.2)' }}>
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tighter text-primary font-headline" style={{ textShadow: '0 0 10px hsl(var(--primary))' }}>
             Horse Panic
           </h1>
-          <p className="text-muted-foreground">Choose your horse and may the odds be ever in your favor!</p>
+          <p className="text-muted-foreground" style={{ textShadow: '0 0 5px hsl(var(--primary))' }}>Choose your horse and may the odds be ever in your favor!</p>
         </CardHeader>
         <CardContent>
           <RaceView horses={horses} />
           
-          <Separator className="my-6" />
+          <Separator className="my-6 bg-primary/30" />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
              {horses.map(horse => (
@@ -257,19 +257,19 @@ export default function HorsePanicPage() {
           <div className="text-center mt-6">
              {gameState === 'finished' && (
                 <div className="mb-4 animate-in fade-in duration-500">
-                  <p className="text-2xl font-bold font-headline">{finalMessage}</p>
-                   {winner && <Award className="h-8 w-8 text-yellow-500 inline-block" />}
+                  <p className="text-2xl font-bold font-headline" style={{ textShadow: '0 0 8px hsl(var(--primary))' }}>{finalMessage}</p>
+                   {winner && <Award className="h-8 w-8 text-yellow-500 inline-block" style={{filter: 'drop-shadow(0 0 5px yellow)'}} />}
                 </div>
               )}
              <div className="flex items-center justify-center gap-4 flex-wrap">
                 <div className="p-4 rounded-lg bg-primary/10 min-w-[150px] text-center">
                     <p className="text-sm text-muted-foreground font-headline">Your Score</p>
-                    <p className="text-4xl font-bold text-primary">{score}</p>
+                    <p className="text-4xl font-bold text-primary" style={{ textShadow: '0 0 8px hsl(var(--primary))' }}>{score}</p>
                 </div>
                 {selectedHorseId !== null && gameState !== 'selecting' && (
-                    <div className="p-4 rounded-lg bg-background border text-center">
+                    <div className="p-4 rounded-lg bg-background border border-primary/30 text-center">
                         <p className="text-sm text-muted-foreground font-headline">Your Pick</p>
-                        <p className="text-2xl font-bold" style={{color: horses.find(h => h.id === selectedHorseId)?.color}}>
+                        <p className="text-2xl font-bold" style={{color: horses.find(h => h.id === selectedHorseId)?.color, textShadow: `0 0 8px ${horses.find(h => h.id === selectedHorseId)?.color}`}}>
                             {horses.find(h => h.id === selectedHorseId)?.name}
                         </p>
                     </div>
@@ -279,23 +279,23 @@ export default function HorsePanicPage() {
         </CardContent>
         <CardFooter className="flex justify-center items-center gap-4 pt-6">
           {gameState === 'selecting' && (
-            <Button size="lg" onClick={() => selectedHorseId && setGameState('running')} disabled={!selectedHorseId} className="shadow-lg">
+            <Button size="lg" onClick={() => selectedHorseId && setGameState('running')} disabled={!selectedHorseId} className="shadow-lg" style={{boxShadow: '0 0 15px hsl(var(--primary))'}}>
               <Play className="mr-2 h-5 w-5" /> Start Race
             </Button>
           )}
           {gameState === 'running' && (
-            <Button size="lg" onClick={handleCashOut} variant="secondary" className="bg-accent text-accent-foreground hover:bg-accent/80 shadow-lg">
+            <Button size="lg" onClick={handleCashOut} variant="secondary" className="bg-accent text-accent-foreground hover:bg-accent/80 shadow-lg" style={{boxShadow: '0 0 15px hsl(var(--accent))'}}>
               <DollarSign className="mr-2 h-5 w-5" /> Cash Out
             </Button>
           )}
           {(gameState === 'running' || gameState === 'finished') && (
-            <Button size="lg" variant="outline" onClick={initializeGame} className="shadow-lg">
+            <Button size="lg" variant="outline" onClick={initializeGame} className="shadow-lg border-primary/50" style={{boxShadow: '0 0 15px hsl(var(--primary))'}}>
               <RotateCcw className="mr-2 h-5 w-5" /> Play Again
             </Button>
           )}
         </CardFooter>
       </Card>
-      <footer className="mt-8 text-center text-white text-sm font-bold" style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}>
+      <footer className="mt-8 text-center text-primary text-sm font-bold" style={{ textShadow: '0 0 5px hsl(var(--primary))' }}>
         <p>A Firebase Studio Creation</p>
       </footer>
     </main>
