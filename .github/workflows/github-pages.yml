@@ -30,7 +30,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist' # Replace with your build output directory if not 'dist'
+          path: './out' # Use the 'out' directory for static export
 
       - name: Deploy to GitHub Pages
         id: deployment
