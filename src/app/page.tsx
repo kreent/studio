@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 type RunnerState = {
   id: number;
@@ -50,19 +51,19 @@ const SmokePuffIcon = ({ className }: { className?: string }) => (
 );
 SmokePuffIcon.displayName = 'SmokePuffIcon';
 
-
 const RunnerIcon = ({ className, style }: { className?: string; style?: React.CSSProperties }) => (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      viewBox="0 0 24 24" 
-      fill="currentColor" 
-      className={className} 
-      style={style}
-    >
-      <path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-2.93 3.65c-.44-.27-.96-.28-1.4-.04l-3.92 2.22c-.38.22-.64.6-.64 1.03v3.13c0 .55.45 1 1 1h2.13c.55 0 1-.45 1-1v-2.13c0-.55-.45-1-1-1H7.87l2.1-1.19 1.53 1.05c.39.27.88.27 1.27 0l2.76-1.9c.44-.3.7-.81.7-1.36v-1.5c0-.55-.45-1-1-1h-1.63c-.56 0-1.07.28-1.37.75z" />
-    </svg>
+  <div className={cn("relative", className)} style={style}>
+    <Image 
+      src="/runner.gif"
+      alt="runner"
+      layout="fill"
+      objectFit="contain"
+      unoptimized
+    />
+  </div>
 );
 RunnerIcon.displayName = 'RunnerIcon';
+
 
 const RaceView = ({ runners }: { runners: RunnerState[] }) => {
   return (
@@ -85,7 +86,7 @@ const RaceView = ({ runners }: { runners: RunnerState[] }) => {
             </div>
            <RunnerIcon
              className="w-16 h-16"
-             style={{ color: runner.color, filter: `drop-shadow(0 0 8px ${runner.color})`}}
+             style={{ filter: `drop-shadow(0 0 8px ${runner.color})`}}
            />
            {runner.status === 'broken' && <SmokePuffIcon className="h-12 w-12 text-slate-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse" />}
          </div>
@@ -113,7 +114,7 @@ const RunnerSelection = memo(({ runner, isSelected, onSelect, disabled }: { runn
             className="p-3 rounded-md bg-card/80"
           >
             <div className="flex items-center gap-3">
-              <RunnerIcon style={{ color: runner.color }} className="h-8 w-8 shrink-0" />
+              <RunnerIcon style={{ }} className="h-8 w-8 shrink-0" />
               <span className="font-bold text-lg truncate font-headline">{runner.name}</span>
             </div>
           </div>
