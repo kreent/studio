@@ -30,27 +30,6 @@ const MAX_SCORE = 1000;
 const TICK_INTERVAL_MS = 100;
 const BROKEN_LEG_PROBABILITY = 0.005;
 
-const SmokePuffIcon = ({ className }: { className?: string }) => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <path d="M5.2 17.6c-2.2-2.2-2.2-5.8 0-8 .9-.9 2.1-1.4 3.3-1.4 1.2 0 2.4.5 3.3 1.4" />
-      <path d="M8.8 14c-2.2-2.2-2.2-5.8 0-8 .9-.9 2.1-1.4 3.3-1.4 1.2 0 2.4.5 3.3 1.4" />
-      <path d="M12.8 17.6c2.2 2.2 5.8 2.2 8 0 .9-.9 1.4-2.1 1.4-3.3 0-1.2-.5-2.4-1.4-3.3" />
-      <path d="M16 14c2.2 2.2 5.8 2.2 8 0 .9-.9 1.4-2.1 1.4-3.3 0-1.2-.5-2.4-1.4-3.3" />
-    </svg>
-);
-SmokePuffIcon.displayName = 'SmokePuffIcon';
-
 const RunnerIcon = ({ className, style }: { className?: string; style?: React.CSSProperties }) => (
   <div className={cn("relative", className)} style={style}>
     <Image 
@@ -88,7 +67,15 @@ const RaceView = ({ runners }: { runners: RunnerState[] }) => {
              className="w-16 h-16"
              style={{ filter: `drop-shadow(0 0 8px ${runner.color})`}}
            />
-           {runner.status === 'broken' && <SmokePuffIcon className="h-12 w-12 text-slate-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse" />}
+           {runner.status === 'broken' && (
+              <Image
+                src="/piedra.png"
+                alt="Fallen Rock"
+                width={60}
+                height={60}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse"
+              />
+           )}
          </div>
        ))}
     </div>
