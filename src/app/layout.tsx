@@ -4,8 +4,8 @@ import { Toaster } from "@/components/ui/toaster";
 
 
 export const metadata: Metadata = {
-  title: 'Horse Panic',
-  description: 'A thrilling horse racing game by Firebase Studio.',
+  title: 'Runner Panic',
+  description: 'A thrilling running game by Firebase Studio.',
 };
 
 export default function RootLayout({
